@@ -1,0 +1,31 @@
+You can use the Interceptor in Spring Boot to perform operations under the following situations −
+
+Before sending the request to the controller
+
+Before sending the response to the client
+
+For example, you can use an interceptor to add the request header before sending the request to the controller and add the response header before sending the response to the client.
+
+To work with interceptor, you need to create @Component class that supports it and it should implement the HandlerInterceptor interface.
+
+The following are the three methods you should know about while working on Interceptors −
+
+preHandle() method − This is used to perform operations before sending the request to the controller. This method should return true to return the response to the client.
+
+postHandle() method − This is used to perform operations before sending the response to the client.
+
+afterCompletion() method − This is used to perform operations after completing the request and response.
+
+======================================================
+
+Spring  boot  interceptor  is  defined  as  a  concept  that  is  invoked  at  the  time  of  preprocessing 
+ and  post-processing  of  a  request  and  allows  the  only  filtered  request  to  the  controllers  to  process it. 
+We  can  assume  it  to  be  analogous  to  a  situation  where  a  visitor  wants  to  meet  the  CEO  of  an  organization. 
+ In the scenario, the  visitor  needs  to  pass  through  a  lot  of  checks  and  protocols  in  order  to  be  qualified  to  meet  the  CEO,  
+for example, availability  of an  appointment,  passing  through  security  checks , etc.  the  concept  of interceptor  is very  similar  to servlet  filter
+	 and  are  applied  to  requests  that  are  being  sent  to  the  controller. 
+
+For  example , adding / updating  configurations ,  writing  logs  are  some tasks  that  the  interceptor   performs  before  the  controller  processes  the  request.
+
+
+ You can use Interceptor to do some tasks such as writing log, adding or updating configurations before request is processed by Controller.
