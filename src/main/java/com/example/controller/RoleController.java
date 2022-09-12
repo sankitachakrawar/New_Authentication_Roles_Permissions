@@ -44,7 +44,7 @@ public class RoleController {
 	}
 	
 	@SuppressWarnings("unchecked")
-	//@PreAuthorize("hasRole('getAllRoles')")
+	@PreAuthorize("hasRole('getAllRoles')")
 	@GetMapping()
 	public ResponseEntity<List<RoleDto>> getAllRoles(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNo, @RequestParam(defaultValue = "25") String size){

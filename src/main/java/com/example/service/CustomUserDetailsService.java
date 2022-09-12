@@ -45,7 +45,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 		if(user ==  null) {
 			throw new UsernameNotFoundException("User not found with Username: " +username);
 		}
-		System.out.println(user.getUsername()+"    "+user.getPassword()+"   "+getAuthority(user));
+		System.out.println("username:"+user.getUsername()+"    "+"password:"+user.getPassword()+"   "+"Authority:"+getAuthority(user));
 		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),getAuthority(user));
 		
 		
@@ -59,7 +59,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     	if (!cache.isKeyExist(userEntity.getId() + "permission", userEntity.getId() + "permission")) {
     	//if((userEntity.getId() + "permission") != null) {
-    		System.out.println(userEntity.getId()+ "permission");
+    		System.out.println("asdfghj>>"+userEntity.getId()+ "permission");
     		ArrayList<SimpleGrantedAuthority> authorities1=new ArrayList<>();
     	
     		ArrayList<String> permissions=roleService.getPermissionByUserId(userEntity.getId());
@@ -68,13 +68,11 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     			authorities1.add(new SimpleGrantedAuthority("ROLE_"+permission));
     	   		
-    	});
-    
-    				
+    	});		
     		authorities=authorities1;  
     		cache.addInCache(userEntity.getId() + "permission", userEntity.getId() + "permission", authorities1);
     	}
-    		      else {
+    	else {
 			authorities = (ArrayList<SimpleGrantedAuthority>) cache.getFromCache(userEntity.getId() + "permission", userEntity.getId() + "permission");
 
 		}	
