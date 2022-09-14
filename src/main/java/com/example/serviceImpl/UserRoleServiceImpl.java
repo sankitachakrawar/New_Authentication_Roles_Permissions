@@ -2,8 +2,6 @@ package com.example.serviceImpl;
 
 import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.dto.AssignRole;
 import com.example.entities.RoleEntity;
@@ -14,7 +12,6 @@ import com.example.repository.RoleRepository;
 import com.example.repository.UserRepository;
 import com.example.repository.UserRoleRepository;
 import com.example.service.UserRoleService;
-import com.example.utils.PaginationUsingFromTo;
 
 
 @Service

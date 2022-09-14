@@ -1,6 +1,7 @@
 package com.example.config;
 
 import java.io.IOException;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		String token=null;
 		String email=null;
 		String authorizationHeader=request.getHeader("Authorization");
+		MultiReadHttpServletRequest multiReadRequest = new MultiReadHttpServletRequest(request);
 		
 		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 			token=authorizationHeader.substring(7);
@@ -52,7 +54,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 			}
 		}
 		
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(multiReadRequest, response);
 	}
 
 }

@@ -1,23 +1,18 @@
 package com.example.serviceImpl;
 
 import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.example.dto.AssignPermission;
 import com.example.entities.PermissionEntity;
 import com.example.entities.RoleEntity;
 import com.example.entities.RolePermissionEntity;
 import com.example.entities.RolePermissionId;
-import com.example.entities.UserRoleEntity;
 import com.example.repository.PermissionRepository;
 import com.example.repository.RolePermissionRepository;
 import com.example.repository.RoleRepository;
 import com.example.service.RolePermissionService;
-import com.example.utils.PaginationUsingFromTo;
+
 
 @Service
 public class RolePemissionServiceImpl implements RolePermissionService{

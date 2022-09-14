@@ -19,6 +19,8 @@ public interface LoggerServiceInterface {
 
 	void logoutUser(String token);
 	
+	LoggerEntity getLoggerDetail(String token);
+	
 }
 
 

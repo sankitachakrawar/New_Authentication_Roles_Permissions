@@ -1,8 +1,8 @@
 package com.example.serviceImpl;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.example.dto.LoggerDto;
@@ -10,13 +10,15 @@ import com.example.entities.LoggerEntity;
 import com.example.entities.UserEntity;
 import com.example.repository.LoggerRepository;
 import com.example.service.LoggerServiceInterface;
-
+import com.example.utils.CacheOperation;
 
 //@Component
 @Service("LoggerServiceImpl")
 public class LoggerServiceImpl implements LoggerServiceInterface {
 
-	
+	@Autowired
+	private CacheOperation cache;
+
 	
 	public LoggerServiceImpl() {
 
@@ -55,7 +57,25 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 		return this.loggerRepository.findAll();
 	}
 	
-	
+	@Override
+	public LoggerEntity getLoggerDetail(String token) {
+
+		LoggerEntity logger;
+
+		if (!cache.isKeyExist(token, token)) {
+
+			logger = loggerRepository.findByToken(token);
+			cache.addInCache(token, token, logger);
+
+		} else {
+
+			logger = (LoggerEntity) cache.getFromCache(token, token);
+
+		}
+
+		return logger;// loggerRepository.findByToken(token);
+
+	}
 	
 	
 	

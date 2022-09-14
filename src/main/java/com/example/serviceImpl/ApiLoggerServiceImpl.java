@@ -6,12 +6,21 @@ import org.springframework.stereotype.Service;
 import com.example.entities.ApiLogger;
 import com.example.repository.ApiLoggerRepository;
 import com.example.service.ApiLoggerService;
-@Service
+@Service("apiLoggerServiceImpl")
 public class ApiLoggerServiceImpl implements ApiLoggerService{
 
 	@Autowired
 	private ApiLoggerRepository apiLoggerRepository;
 	
+	
+	
+	public ApiLoggerServiceImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
 	@Override
 	public void createApiLogger(ApiLogger apiLogger) {
 		

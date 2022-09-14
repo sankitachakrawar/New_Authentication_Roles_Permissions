@@ -53,6 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService{
     }
 	
 	
+	@SuppressWarnings("unchecked")
 	private ArrayList<SimpleGrantedAuthority> getAuthority(UserEntity userEntity){
 		
     	ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();

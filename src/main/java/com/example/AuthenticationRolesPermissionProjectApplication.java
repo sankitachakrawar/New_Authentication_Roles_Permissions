@@ -15,7 +15,7 @@ import com.example.properties.FileStorageProperties;
 @EnableConfigurationProperties({
     FileStorageProperties.class
 })
-@EnableWebMvc
+//@EnableWebMvc
 public class AuthenticationRolesPermissionProjectApplication {
 
 	public static void main(String[] args) {

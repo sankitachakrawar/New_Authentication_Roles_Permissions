@@ -1,6 +1,7 @@
 package com.example.serviceImpl;
 
 import java.net.MalformedURLException;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.entities.FileUploadEntity;
 import com.example.exceptionHandling.FileStorageException;
 import com.example.exceptionHandling.MyFileNotFoundException;
-import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.properties.FileStorageProperties;
 import com.example.repository.FileStorageRepository;
 import com.example.service.FileStorageService;

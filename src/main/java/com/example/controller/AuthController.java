@@ -29,6 +29,7 @@ import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.UserRepository;
 import com.example.service.AuthService;
 import com.example.service.EmailService;
+import com.example.service.ExcelService;
 import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.LoggerServiceInterface;
 import com.example.service.OtpGenerator;
@@ -71,6 +72,9 @@ public class AuthController {
 	 @Autowired
 	 private AuthService authService;
 	
+	 @Autowired 
+	 private ExcelService excelService;
+	 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUsers(@Valid @RequestBody UserDto userDto){
 		
@@ -78,6 +82,7 @@ public class AuthController {
 			
 			String email=userDto.getEmail();
 			Optional<UserEntity> dataBaseEmail = userRepository.findByEmailContainingIgnoreCase(email);
+			
 			if ((dataBaseEmail == null) || dataBaseEmail.isEmpty()) {
 				userService.addUsers(userDto);
 				

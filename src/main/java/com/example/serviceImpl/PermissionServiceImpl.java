@@ -1,22 +1,14 @@
 package com.example.serviceImpl;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.example.dto.IEntityDto;
-import com.example.dto.IPermissionDto;
-import com.example.dto.PermissionDto;
 import com.example.dto.PermissionRequestDto;
 import com.example.entities.PermissionEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.EntityRepository;
 import com.example.repository.PermissionRepository;
 import com.example.service.PermissionService;
-import com.example.utils.PaginationUsingFromTo;
+
 
 @Service
 public class PermissionServiceImpl implements PermissionService{

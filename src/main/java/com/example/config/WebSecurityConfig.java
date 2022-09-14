@@ -33,12 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private JwtRequestFilter filter;
+	
 
 	@Autowired
 	private CustomUserDetailsService customUserDetailsService;
 	
 	  @Override	  
-	  @Bean public UserDetailsService userDetailsService() {
+	  @Bean 
+	  public UserDetailsService userDetailsService() {
 	  
 	  return super.userDetailsService();
 	  

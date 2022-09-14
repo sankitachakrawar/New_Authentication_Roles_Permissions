@@ -91,7 +91,7 @@ public class ExceptionHandlerControllerAdvice {
 		errorRequest.setMethod(Enum.valueOf(MethodEnum.class, request.getMethod()));
 		errorRequest.setToken(request.getHeader("Authorization"));
 		errorRequest.setUrl(request.getRequestURI());
-		
+		exception.printStackTrace();
 		errorLoggerRepository.save(errorRequest);
 		
 		ErrorResponseDto error = new ErrorResponseDto();

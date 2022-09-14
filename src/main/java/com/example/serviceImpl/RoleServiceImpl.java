@@ -14,12 +14,9 @@ import com.example.dto.IRoleDto;
 import com.example.dto.RoleDto;
 import com.example.dto.RoleIdListDto;
 import com.example.dto.RolePermissionDto;
-import com.example.dto.RoleUserDto;
-import com.example.dto.UserDto;
 import com.example.entities.EntityEntity;
 import com.example.entities.PermissionEntity;
 import com.example.entities.RoleEntity;
-import com.example.entities.UserEntity;
 import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.EntityRepository;
 import com.example.repository.PermissionRepository;
@@ -47,9 +44,6 @@ public class RoleServiceImpl implements RoleService{
 	
 	@Autowired
 	private PermissionRepository permissionRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
 	
 	@Override
 	public void addRole(RoleDto roleDto) {

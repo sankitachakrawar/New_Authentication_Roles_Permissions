@@ -34,6 +34,9 @@ public class ApiLogger implements Serializable{
 	@Column(name="token")
 	private String token;
 	
+	@Column(name = "body", length = 10000)
+	private String body;
+	
 	public Long getId() {
 		return id;
 	}
@@ -73,20 +76,33 @@ public class ApiLogger implements Serializable{
 	public void setToken(String token) {
 		this.token = token;
 	}
+	
+	
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
 
 	public ApiLogger() {
 		super();
 		
 	}
 
-	public ApiLogger(Long id, String url, String method, Date createdAt, String token) {
+	public ApiLogger(Long id, String url, String method, Date createdAt, String token, String body) {
 		super();
 		this.id = id;
 		this.url = url;
 		this.method = method;
 		this.createdAt = createdAt;
 		this.token = token;
+		this.body = body;
 	}
+
+	
 
 	
 	
