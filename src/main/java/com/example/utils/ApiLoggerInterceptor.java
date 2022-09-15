@@ -46,7 +46,7 @@ public class ApiLoggerInterceptor implements HandlerInterceptor{
 		String getParam = arr[arr.length - 1];
 		String getParam2 = arr[arr.length - 2];
 		
-		ArrayList<String> skipUrls = new ArrayList<>(Arrays.asList("/auth/login", "/auth/forgot-pass", "/file/downloadFile/" + getParam2 + "/" + getParam));
+		ArrayList<String> skipUrls = new ArrayList<>(Arrays.asList("/auth/register","/auth/login","/api/forgot-pass-confirm","/auth/forgot-pass","/api/orders","/payment/success", "/file/downloadFile/" + getParam2 + "/" + getParam));
 		if (!skipUrls.contains(request.getRequestURI())) {
 
 			final String requestTokenHeader = request.getHeader("Authorization").split(" ")[1];

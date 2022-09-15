@@ -29,7 +29,7 @@ public class UserTemp {
 	private String address;
 	
 	@Column(name="status")
-	private boolean status=true;
+	private boolean status=false;
 
 	public Long getId() {
 		return id;
@@ -85,6 +85,10 @@ public class UserTemp {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+	
+
+	
 
 	public UserTemp(Long id, String name, String email, String username, String address, boolean status) {
 		super();

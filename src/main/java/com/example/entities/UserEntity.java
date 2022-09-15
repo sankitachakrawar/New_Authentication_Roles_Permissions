@@ -60,7 +60,6 @@ public class UserEntity implements Serializable{
 	@Column(name="updatedAt")
 	@UpdateTimestamp
 	private Date updatedAt;
-
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.user", cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -149,14 +148,15 @@ public class UserEntity implements Serializable{
 		this.userRole = userRole;
 	}
 
-	
 	public UserEntity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+
 	
 	
+
 	public UserEntity(Long id, String name, String email, String password, String username, String address,
 			Boolean isActive, Date createdAt, Date updatedAt, List<UserRoleEntity> userRole) {
 		super();
@@ -174,8 +174,15 @@ public class UserEntity implements Serializable{
 
 	@Override
 	public String toString() {
-		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + "]";
+		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + ", password=" + password + ", username="
+				+ username + ", address=" + address + ", isActive=" + isActive + ", createdAt=" + createdAt
+				+ ", updatedAt=" + updatedAt + "]";
 	}
+
+//	@Override
+//	public String toString() {
+//		return "UserEntity [id=" + id + ", name=" + name + ", email=" + email + "]";
+//	}
 
 	
 	

@@ -2,6 +2,7 @@ package com.example.controller;
 
 
 import java.io.IOException;
+
 import java.util.List;
 
 import java.util.Map;
@@ -18,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.app.dto.SuccessResponseDto;
-import com.app.dto.UserDataDto;
 import com.example.entities.UserEntity;
 import com.example.entities.UserTemp;
 import com.example.helper.ExcelHelper;
@@ -39,10 +37,10 @@ public class ExcelController {
 	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file){
 		if(ExcelHelper.checkExcelFormat(file)) {
 			
+			
 			this.excelService.save(file);
-			return ResponseEntity.ok(Map.of("Message","file uploaded and save to db"));
-			
-			
+
+			return ResponseEntity.ok(Map.of("Message","file uploaded and save to db"));	
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("please upload excel file only");
 	}
