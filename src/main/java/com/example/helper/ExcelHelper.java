@@ -36,7 +36,7 @@ public class ExcelHelper {
 			
 		 XSSFWorkbook workbook=new XSSFWorkbook(is);
 		 //sheet1 is excel sheetname in excel
-		 XSSFSheet sheet=workbook.getSheet("sheet1");
+		 XSSFSheet sheet=workbook.getSheet("excel1");
 		
 		 int rowNumber=0;
 		 Iterator<Row> iterator=sheet.iterator();
