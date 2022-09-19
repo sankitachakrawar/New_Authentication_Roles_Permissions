@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -30,6 +31,7 @@ public class UserCount {
 	private UserEntity id;
 
 	@Column(name = "created_at")
+	@CreationTimestamp
 	private Date createdAt;
 
 	@Column(name = "is_active")
@@ -78,6 +80,7 @@ public class UserCount {
 		this.id = id;
 		this.createdAt = createdAt;
 		this.isActive = isActive;
+
 	}
 
 	@Override

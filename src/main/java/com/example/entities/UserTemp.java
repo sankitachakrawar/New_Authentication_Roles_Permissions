@@ -2,12 +2,9 @@ package com.example.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -33,9 +30,9 @@ public class UserTemp {
 	@Column(name = "status")
 	private boolean status;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "count_id")
-	private UserCount countid;
+	// @OneToOne(fetch = FetchType.LAZY)
+	// @JoinColumn(name = "count_id")
+	private Long countid;
 
 	public Long getId() {
 		return id;
@@ -85,35 +82,43 @@ public class UserTemp {
 		this.status = status;
 	}
 
-	public UserCount getCountid() {
-		return countid;
-	}
-
-	public void setCountid(UserCount countid) {
-		this.countid = countid;
-	}
+//	public UserCount getCountid() {
+//		return countid;
+//	}
+//
+//	public void setCountid(UserCount countid) {
+//		this.countid = countid;
+//	}
 
 	public UserTemp() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserTemp(Long id, String name, String email, String username, String address, boolean status,
-			UserCount countid) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.email = email;
-		this.username = username;
-		this.address = address;
-		this.status = status;
+	public Long getCountid() {
+		return countid;
+	}
+
+	public void setCountid(Long countid) {
 		this.countid = countid;
 	}
+
+//	public UserTemp(Long id, String name, String email, String username, String address, boolean status,
+//			UserCount countid) {
+//		super();
+//		this.id = id;
+//		this.name = name;
+//		this.email = email;
+//		this.username = username;
+//		this.address = address;
+//		this.status = status;
+//		this.countid = countid;
+//	}
 
 	@Override
 	public String toString() {
 		return "UserTemp [id=" + id + ", name=" + name + ", email=" + email + ", username=" + username + ", address="
-				+ address + ", status=" + status + "]";
+				+ address + ", status=" + status + ", countid=" + countid + "]";
 	}
 
 }

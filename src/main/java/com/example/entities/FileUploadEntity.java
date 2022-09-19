@@ -12,29 +12,32 @@ import javax.persistence.Table;
 import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
-@Table(name="file_upload")
+@Table(name = "file_upload")
 
 public class FileUploadEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column(name="fileName")
+
+	@Column(name = "fileName")
 	private String fileName;
-	
-	@Column(name="size")
+
+	@Column(name = "size")
 	private Long size;
-	
-	@Column(name="type")
+
+	@Column(name = "type")
 	private String type;
-	
-	@Column(name="originalName")
+
+	@Column(name = "originalName")
 	private String originalName;
-	
-	@Column(name="created_At")
+
+	@Column(name = "created_At")
 	@CreationTimestamp
 	private Date createdAt;
+
+	@Column(name = "user_id")
+	private Long userId;
 
 	public Long getId() {
 		return id;
@@ -84,12 +87,21 @@ public class FileUploadEntity {
 		this.createdAt = createdAt;
 	}
 
-	public FileUploadEntity() {
-		super();
-		
+	public Long getUserId() {
+		return userId;
 	}
 
-	public FileUploadEntity(Long id, String fileName, Long size, String type, String originalName, Date createdAt) {
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+
+	public FileUploadEntity() {
+		super();
+
+	}
+
+	public FileUploadEntity(Long id, String fileName, Long size, String type, String originalName, Date createdAt,
+			Long userId) {
 		super();
 		this.id = id;
 		this.fileName = fileName;
@@ -97,6 +109,7 @@ public class FileUploadEntity {
 		this.type = type;
 		this.originalName = originalName;
 		this.createdAt = createdAt;
+		this.userId = userId;
 	}
 
 	@Override
@@ -105,9 +118,4 @@ public class FileUploadEntity {
 				+ ", originalName=" + originalName + ", createdAt=" + createdAt + "]";
 	}
 
-	
-	
-	
-	
-	
 }
