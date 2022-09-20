@@ -12,4 +12,6 @@ public interface ExcelRepository extends JpaRepository<UserTemp, Long> {
 
 	UserTemp findByEmailContainingIgnoreCase(String email);
 
+	List<UserTemp> getByCountid(Long countid);
+
 }

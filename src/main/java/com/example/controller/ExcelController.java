@@ -1,6 +1,5 @@
 package com.example.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.example.dto.SuccessResponseDto;
-import com.example.dto.UserDataDto;
 import com.example.entities.UserTemp;
 import com.example.helper.ExcelHelper;
 import com.example.service.ExcelService;
@@ -46,14 +43,6 @@ public class ExcelController {
 	@GetMapping()
 	public List<UserTemp> getAllUsers() {
 		return this.excelService.getAllUsers();
-	}
-
-	@PostMapping("/bulk-upload")
-	public ResponseEntity<?> bulkUploadProject(HttpServletRequest request) throws IOException {
-
-		excelService.fileBulkUpload(27L, ((UserDataDto) request.getAttribute("userData")).getUserId());
-		return new ResponseEntity<>(new SuccessResponseDto("Success", "success", null), HttpStatus.OK);
-
 	}
 
 }

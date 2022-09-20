@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.example.dto.LoggerDto;
 import com.example.entities.LoggerEntity;
 import com.example.entities.UserEntity;
@@ -19,12 +20,10 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 	@Autowired
 	private CacheOperation cache;
 
-	
 	public LoggerServiceImpl() {
 
-
 	}
-	
+
 	@Autowired
 	private LoggerRepository loggerRepository;
 
@@ -43,20 +42,19 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 	@Transactional
 	@Override
 	public void logoutUser(String token) {
-		
+
 		final String token1 = token.substring(7);
-			loggerRepository.removeByToken(token1);
-			//this.loggerRepository.delete(entity);
-			
+		loggerRepository.removeByToken(token1);
+		// this.loggerRepository.delete(entity);
+
 	}
 
-	
 	@Override
 	public List<LoggerEntity> getAllDetails() {
-		
+
 		return this.loggerRepository.findAll();
 	}
-	
+
 	@Override
 	public LoggerEntity getLoggerDetail(String token) {
 
@@ -73,29 +71,8 @@ public class LoggerServiceImpl implements LoggerServiceInterface {
 
 		}
 
-		return logger;// loggerRepository.findByToken(token);
+		return logger;
 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,7 @@
 package com.example.utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.example.dto.ErrorResponseDto;
 import com.example.entities.ApiLogger;
+import com.example.entities.LoggerEntity;
 import com.example.service.ApiLoggerService;
 import com.example.service.LoggerServiceInterface;
 import com.google.gson.Gson;
@@ -35,50 +39,50 @@ public class ApiLoggerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 
-//		String[] arr = request.getRequestURI().split("/");
-//		String getParam = arr[arr.length - 1];
-//		String getParam2 = arr[arr.length - 2];
-//
-//		ArrayList<String> skipUrls = new ArrayList<>(Arrays.asList("/swagger-ui/index.html", "/auth/register",
-//				"/auth/login", "/api/forgot-pass-confirm", "/auth/forgot-pass", "/api/orders", "/payment/success",
-//				"/file/downloadFile/" + getParam2 + "/" + getParam));
-//
-//		System.out.println("request>>   " + request.getRequestURI());
-//
-//		if (!skipUrls.contains(request.getRequestURI())) {
-//
-//			final String requestTokenHeader = request.getHeader("Authorization").split(" ")[1];
-//
-//			System.out.println(requestTokenHeader);
-//			LoggerEntity logsDetail = loggerServiceInterface.getLoggerDetail(requestTokenHeader);
-//
-//			if (logsDetail == null) {
-//
-//				ErrorResponseDto error = new ErrorResponseDto("You are not login User", "notLoginUser");
-//				String employeeJsonString = this.gson.toJson(error);
-//				response.setContentType("application/json");
-//				response.setCharacterEncoding("UTF-8");
-//				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-//				response.getWriter().write(employeeJsonString);
-//				return false;
-//
-//			} else {
+		String[] arr = request.getRequestURI().split("/");
+		String getParam = arr[arr.length - 1];
+		String getParam2 = arr[arr.length - 2];
 
-		ApiLogger apiLogger = new ApiLogger();
+		ArrayList<String> skipUrls = new ArrayList<>(Arrays.asList("/v3/api-docs", "/v2/api-docs",
+				"/swagger-resources/**", "/swagger-ui/*", "/api/swagger-ui/index.html", "/webjars/*", "/auth/register",
+				"/auth/login", "/api/forgot-pass-confirm", "/auth/forgot-pass", "/api/orders", "/payment/success",
+				"/file/downloadFile/" + getParam2 + "/" + getParam));
 
-		apiLogger.setMethod(request.getMethod());
-		apiLogger.setUrl(request.getRequestURI());
-		apiLogger.setToken(request.getHeader("Authorization"));
-		apiLogger.setBody(request instanceof StandardMultipartHttpServletRequest ? null
-				: request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
-		apiLoggerService.createApiLogger(apiLogger);
-		return true;
-		// }
-		// } else {
+		System.out.println("request>>   " + request.getRequestURI());
 
-		// return true;
+		if (!skipUrls.contains(request.getRequestURI())) {
 
-		// }
+			final String requestTokenHeader = request.getHeader("Authorization").split(" ")[1];
+			System.out.println("request1>>" + requestTokenHeader);
+			LoggerEntity logsDetail = loggerServiceInterface.getLoggerDetail(requestTokenHeader);
+
+			if (logsDetail == null) {
+
+				ErrorResponseDto error = new ErrorResponseDto("You are not login User", "notLoginUser");
+				String employeeJsonString = this.gson.toJson(error);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().write(employeeJsonString);
+				return false;
+
+			} else {
+
+				ApiLogger apiLogger = new ApiLogger();
+
+				apiLogger.setMethod(request.getMethod());
+				apiLogger.setUrl(request.getRequestURI());
+				apiLogger.setToken(request.getHeader("Authorization"));
+				apiLogger.setBody(request instanceof StandardMultipartHttpServletRequest ? null
+						: request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+				apiLoggerService.createApiLogger(apiLogger);
+				return true;
+			}
+		} else {
+
+			return true;
+
+		}
 	}
 
 }
