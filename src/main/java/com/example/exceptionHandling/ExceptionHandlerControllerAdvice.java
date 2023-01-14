@@ -106,8 +106,8 @@ public class ExceptionHandlerControllerAdvice {
 	public @ResponseBody ErrorResponseDto fileUploadException(final MultipartException exception) {
 
 		ErrorResponseDto error = new ErrorResponseDto();
-		error.setMessage("Please upload file");
-		error.setMsgKey("pleaseUploadFile");
+		error.setMessage("Please upload file or check size of file");
+		error.setMsgKey("pleaseUploadFileOrCheckSizeOfFile");
 		return error;
 
 	}

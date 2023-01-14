@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.dto.ErrorResponseDto;
+import com.example.dto.SuccessResponseDto;
 import com.example.entities.UserTemp;
 import com.example.helper.ExcelHelper;
 import com.example.service.ExcelService;
@@ -26,7 +28,7 @@ public class ExcelController {
 	private ExcelService excelService;
 
 	// upload data from excel file to database
-	@PostMapping()
+	@PostMapping("/uploadFile")
 	public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file, HttpServletRequest request)
 			throws Exception {
 
@@ -34,10 +36,10 @@ public class ExcelController {
 
 			this.excelService.save(file, request);
 
-			return new ResponseEntity<>("file uploaded and save to db", HttpStatus.OK);
+			return new ResponseEntity<>(new SuccessResponseDto("file uploaded successfully","fileUploadedSuccessfully", null), HttpStatus.OK);
 		}
 
-		return new ResponseEntity<>("Please upload excel file", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new ErrorResponseDto("Please upload excel file","PleaseUploadExcelFile"), HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping()

@@ -2,14 +2,12 @@ package com.example.serviceImpl;
 
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.example.config.KafkaProducer;
 import com.example.entities.UserCount;
 import com.example.entities.UserEntity;
 import com.example.entities.UserTemp;
@@ -17,9 +15,9 @@ import com.example.helper.ExcelHelper;
 import com.example.repository.ExcelRepository;
 import com.example.repository.UserCountRepository;
 import com.example.repository.UserRepository;
+import com.example.repository.UserTempRepository;
 import com.example.service.ExcelService;
 import com.example.utils.JwtTokenUtil;
-
 @Service
 @Transactional
 public class ExcelServiceImpl implements ExcelService {
@@ -38,6 +36,12 @@ public class ExcelServiceImpl implements ExcelService {
 
 	@Autowired
 	private UserCountRepository countRepository;
+	
+	@Autowired
+	private UserTempRepository userTempRepository;
+	
+	@Autowired
+	private KafkaProducer kafkaProducer;
 
 	@Override
 	public void save(MultipartFile file, HttpServletRequest request) throws Exception {
@@ -74,7 +78,7 @@ public class ExcelServiceImpl implements ExcelService {
 			}
 
 			int i = 0;
-			System.out.println("HER  ");
+			
 
 			List<UserTemp> temp4 = this.excelRepository.getByCountid(count.getCountid());
 			System.out.println("temp4>>  " + temp4.size());
@@ -112,12 +116,13 @@ public class ExcelServiceImpl implements ExcelService {
 						excelRepository.save(temp2);
 
 					}
+					
 
 				} catch (Exception e) {
 
 				}
 			}
-
+			saveToUserTable(userEntity.getId(), count.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,6 +135,16 @@ public class ExcelServiceImpl implements ExcelService {
 		return this.excelRepository.findAll();
 
 	}
+	
+	private void saveToUserTable(Long countId, UserEntity userId) {
+		List<UserTemp> list = userTempRepository.findByCountid(countId);
+		for (int i = 0; i < list.size(); i++) {
+			this.kafkaProducer.addUsersToUsersMainTable(list.get(i));
+		}
+	}
+	
+	
+	
 
 }
 
