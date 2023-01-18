@@ -21,7 +21,6 @@ import com.example.dto.ErrorResponseDto;
 import com.example.dto.ForgotPasswordRequestDto;
 import com.example.dto.IPermissionDto;
 import com.example.dto.LoggerDto;
-import com.example.dto.OtpLoggerDto;
 import com.example.dto.SuccessResponseDto;
 import com.example.dto.UserDto;
 import com.example.entities.UserEntity;
@@ -29,11 +28,8 @@ import com.example.exceptionHandling.ResourceNotFoundException;
 import com.example.repository.UserRepository;
 import com.example.service.AuthService;
 import com.example.service.EmailService;
-import com.example.service.ExcelService;
 import com.example.service.ForgotPasswordServiceIntf;
 import com.example.service.LoggerServiceInterface;
-import com.example.service.OtpGenerator;
-import com.example.service.OtpLoggerService;
 import com.example.service.UserService;
 import com.example.serviceImpl.UserServiceImpl;
 import com.example.utils.JwtTokenUtil;
@@ -44,133 +40,130 @@ public class AuthController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private UserServiceImpl userServiceImpl;
-	
+
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private ForgotPasswordServiceIntf forgotPasswordServiceIntf;
-	
+
 	@Autowired
 	private LoggerServiceInterface loggerServiceInterface;
-	
+
 	@Autowired
 	private EmailService emailService;
-	
+
 	@Autowired
-	private OtpLoggerService loggerService;
-	
-	@Autowired
-	private OtpGenerator otpService;
-	
-	 @Autowired
-	 private AuthService authService;
-	
-	 @Autowired 
-	 private ExcelService excelService;
-	 
+	private AuthService authService;
+
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUsers(@Valid @RequestBody UserDto userDto){
-		
+	public ResponseEntity<?> registerUsers(@Valid @RequestBody UserDto userDto) {
+
 		try {
-			
-			String email=userDto.getEmail();
+
+			String email = userDto.getEmail();
 			Optional<UserEntity> dataBaseEmail = userRepository.findByEmailContainingIgnoreCase(email);
-			
+
 			if ((dataBaseEmail == null) || dataBaseEmail.isEmpty()) {
 				userService.addUsers(userDto);
-				
+
 				return new ResponseEntity<>(new SuccessResponseDto("User Registered", "UserRegistered", null),
 						HttpStatus.CREATED);
-		} else {
-			return new ResponseEntity<>(
-					new ErrorResponseDto("User Email Id Already Exist", "UserEmailIdAlreadyExist"),
-					HttpStatus.BAD_REQUEST);
-		}
-		}catch (Exception e) {
+			} else {
+				return new ResponseEntity<>(
+						new ErrorResponseDto("User Email Id Already Exist", "UserEmailIdAlreadyExist"),
+						HttpStatus.BAD_REQUEST);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>(new ErrorResponseDto("User Not Registered","UserNotRegistered"),
+			return new ResponseEntity<>(new ErrorResponseDto("User Not Registered", "UserNotRegistered"),
 					HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
-	
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/login")
-	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequestDto authenticationRequest) throws Exception, ResourceNotFoundException {
+	public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody AuthRequestDto authenticationRequest)
+			throws Exception, ResourceNotFoundException {
 
 		try {
 
-			UserEntity userEntity= userService.findByEmail(authenticationRequest.getEmail());
+			UserEntity userEntity = userService.findByEmail(authenticationRequest.getEmail());
 			if (!userServiceImpl.comparePassword(authenticationRequest.getPassword(), userEntity.getPassword())) {
 
-				return new ResponseEntity<>(new ErrorResponseDto("Invalid Credential", "invalidCreds"), HttpStatus.UNAUTHORIZED);
+				return new ResponseEntity<>(new ErrorResponseDto("Invalid Credential", "invalidCreds"),
+						HttpStatus.UNAUTHORIZED);
 			}
-			
-			//System.out.println("DATA>>"+userEntity.getEmail());
+
+			// System.out.println("DATA>>"+userEntity.getEmail());
 			@SuppressWarnings("static-access")
-			final String token = jwtTokenUtil.generateTokenOnLogin(userEntity.getEmail(),userEntity.getPassword());
-		
+			final String token = jwtTokenUtil.generateTokenOnLogin(userEntity.getEmail(), userEntity.getPassword());
+
 			List<IPermissionDto> permissions = userService.getUserPermission(userEntity.getId());
 			LoggerDto logger = new LoggerDto();
 			logger.setToken(token);
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 15);
 			logger.setExpireAt(calender.getTime());
-			//System.out.println("expire>>>>    "+calender.getTime());
-			loggerServiceInterface.createLogger(logger,userEntity);
-			
-			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,userEntity.getEmail(),userEntity.getName(),permissions,userEntity.getId())), HttpStatus.OK);
-			
+			// System.out.println("expire>>>> "+calender.getTime());
+			loggerServiceInterface.createLogger(logger, userEntity);
+
+			return new ResponseEntity(new SuccessResponseDto("Success", "success", new AuthResponseDto(token,
+					userEntity.getEmail(), userEntity.getName(), permissions, userEntity.getId())), HttpStatus.OK);
+
 		} catch (ResourceNotFoundException e) {
 
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
 
 		}
- }
-	
-	
+	}
+
 	@PostMapping("/forgot-pass")
-	public ResponseEntity<?> forgotPass(@Valid @RequestBody ForgotPasswordRequestDto forgotPassBody, HttpServletRequest request) throws Exception {
+	public ResponseEntity<?> forgotPass(@Valid @RequestBody ForgotPasswordRequestDto forgotPassBody,
+			HttpServletRequest request) throws Exception {
 
-			try {
-					
-				UserEntity userEntity = userService.findByEmail(forgotPassBody.getEmail());
-			
-			//final String otp=otpService.random(6);
-				final String token = jwtTokenUtil.generateTokenOnForgotPass(userEntity.getEmail());
-				
-				
-				final String url = "To confirm your account, please click here : " + "http://localhost:8089" + "/forgot-pass-confirm" + "?token=" + token;
-				Calendar calender = Calendar.getInstance();
-				calender.add(Calendar.MINUTE, 5);
-				this.forgotPasswordServiceIntf.createForgotPasswordRequest(userEntity.getId(), token, calender.getTime());
-				
-				emailService.sendSimpleMessage(userEntity.getEmail(),"subject" , url);
-				return new ResponseEntity<>(new SuccessResponseDto("Password reset link sent on Registerd Email", "passwordRestLinkMail", null), HttpStatus.OK);
+		try {
 
-			} catch (ResourceNotFoundException e) {
+			UserEntity userEntity = userService.findByEmail(forgotPassBody.getEmail());
 
-				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
+			// final String otp=otpService.random(6);
+			final String token = jwtTokenUtil.generateTokenOnForgotPass(userEntity.getEmail());
 
-			}
+			final String url = "To confirm your account, please click here : " + "http://localhost:8089"
+					+ "/forgot-pass-confirm" + "?token=" + token;
+			Calendar calender = Calendar.getInstance();
+			calender.add(Calendar.MINUTE, 5);
+			this.forgotPasswordServiceIntf.createForgotPasswordRequest(userEntity.getId(), token, calender.getTime());
 
-		}
-	 @GetMapping("/logout")
-		public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token, HttpServletRequest request) throws Exception {
+			emailService.sendSimpleMessage(userEntity.getEmail(), "subject", url);
+			return new ResponseEntity<>(
+					new SuccessResponseDto("Password reset link sent on Registerd Email", "passwordRestLinkMail", null),
+					HttpStatus.OK);
 
-			loggerServiceInterface.logoutUser(token);
-		
-			return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
+		} catch (ResourceNotFoundException e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
 
 		}
-	
+
+	}
+
+	@GetMapping("/logout")
+	public ResponseEntity<?> logoutUser(@RequestHeader("Authorization") String token, HttpServletRequest request)
+			throws Exception {
+
+		loggerServiceInterface.logoutUser(token);
+
+		return new ResponseEntity<>(new ErrorResponseDto("Logout Successfully", "logoutSuccess"), HttpStatus.OK);
+
+	}
+
 //	 @PostMapping("/verifyAccount")
 //	 public ResponseEntity<?> verifyAccount(@RequestBody UserEntity userEntity){
 //		 
@@ -193,11 +186,10 @@ public class AuthController {
 //				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "userNotFound"), HttpStatus.NOT_FOUND);
 //	 }
 //	 }
-	 
-	 
-	 //for database function
-	 @GetMapping("/getUserById/{id}")
-	 public ResponseEntity<?> getUserById(@PathVariable Long id){
-		return new ResponseEntity<>(authService.getUserById(id),HttpStatus.OK);
-	 }
+
+	// for database function
+	@GetMapping("/getUserById/{id}")
+	public ResponseEntity<?> getUserById(@PathVariable Long id) {
+		return new ResponseEntity<>(authService.getUserById(id), HttpStatus.OK);
+	}
 }

@@ -9,6 +9,6 @@ import com.example.entities.UserTemp;
 
 public interface UserTempRepository extends JpaRepository<UserTemp, Long> {
 
-	List<UserTemp> findByCountid(Long countId);
+	List<UserTemp> findByCountId(Long countId);
 
 }

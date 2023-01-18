@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.jms.annotation.EnableJms;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.example.properties.FileStorageProperties;
@@ -16,6 +17,7 @@ import com.example.properties.FileStorageProperties;
     FileStorageProperties.class
 })
 //@EnableWebMvc
+
 public class AuthenticationRolesPermissionProjectApplication {
 
 	public static void main(String[] args) {

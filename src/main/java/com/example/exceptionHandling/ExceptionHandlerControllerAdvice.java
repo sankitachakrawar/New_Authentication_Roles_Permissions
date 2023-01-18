@@ -29,20 +29,20 @@ import com.example.repository.ErrorLoggerRepository;
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
-	
 	@Autowired
 	ErrorLoggerRepository errorLoggerRepository;
-	
-	
+
 	@ExceptionHandler(ResourceNotFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception, final HttpServletRequest request) {
-		ExceptionResponse error=new ExceptionResponse();
+	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
+			final HttpServletRequest request) {
+		ExceptionResponse error = new ExceptionResponse();
 		error.setErrorMessage(exception.getMessage());
 		error.callerURL(request.getRequestURI());
 		return error;
-		
+
 	}
+
 	@ExceptionHandler(AccessDeniedException.class)
 	@ResponseStatus(value = HttpStatus.FORBIDDEN)
 	public @ResponseBody ErrorResponseDto handleAccessDeniedException(final AccessDeniedException exception) {
@@ -53,10 +53,10 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 
 	}
-	
+
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	//@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	public ResponseEntity <List<String>> handleValidationException(final MethodArgumentNotValidException exception) {
+	// @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	public ResponseEntity<List<String>> handleValidationException(final MethodArgumentNotValidException exception) {
 
 		List<String> details = new ArrayList<>();
 
@@ -66,12 +66,14 @@ public class ExceptionHandlerControllerAdvice {
 
 		}
 
-		return new ResponseEntity<>(details,HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(details, HttpStatus.BAD_REQUEST);
 
 	}
+
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
 	@ResponseStatus(value = HttpStatus.METHOD_NOT_ALLOWED)
-	public @ResponseBody ErrorResponseDto handleMethodNotSupportException(final HttpRequestMethodNotSupportedException exception) {
+	public @ResponseBody ErrorResponseDto handleMethodNotSupportException(
+			final HttpRequestMethodNotSupportedException exception) {
 
 		ErrorResponseDto error = new ErrorResponseDto();
 		error.setMessage("Invalid request, Please check URL");
@@ -79,13 +81,16 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 
 	}
-	
+
 	@ExceptionHandler(Exception.class)
+
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	public @ResponseBody ErrorResponseDto handleException(final Exception exception, HttpServletRequest request) throws IOException {
+	public @ResponseBody ErrorResponseDto handleException(final Exception exception, HttpServletRequest request)
+			throws IOException {
 
 		ErrorLoggerEntity errorRequest = new ErrorLoggerEntity();
-		errorRequest.setBody(request instanceof StandardMultipartHttpServletRequest ? null : request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+		errorRequest.setBody(request instanceof StandardMultipartHttpServletRequest ? null
+				: request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 		errorRequest.setHost(InetAddress.getLoopbackAddress().getHostAddress());
 		errorRequest.setMessage(exception.getMessage());
 		errorRequest.setMethod(Enum.valueOf(MethodEnum.class, request.getMethod()));
@@ -93,14 +98,14 @@ public class ExceptionHandlerControllerAdvice {
 		errorRequest.setUrl(request.getRequestURI());
 		exception.printStackTrace();
 		errorLoggerRepository.save(errorRequest);
-		
+
 		ErrorResponseDto error = new ErrorResponseDto();
 		error.setMessage("Something Went Wrong");
 		error.setMsgKey("somethingWentWrong");
 		return error;
 
 	}
-	
+
 	@ExceptionHandler(MultipartException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public @ResponseBody ErrorResponseDto fileUploadException(final MultipartException exception) {
@@ -111,5 +116,5 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 
 	}
-	
+
 }

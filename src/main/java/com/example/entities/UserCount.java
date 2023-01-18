@@ -24,7 +24,7 @@ public class UserCount {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long countid;
+	private Long countId;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -37,12 +37,12 @@ public class UserCount {
 	@Column(name = "is_active")
 	private Boolean isActive = true;
 
-	public Long getCountid() {
-		return countid;
+	public Long getCountId() {
+		return countId;
 	}
 
-	public void setCountid(Long countid) {
-		this.countid = countid;
+	public void setCountId(Long countId) {
+		this.countId = countId;
 	}
 
 	public UserEntity getId() {
@@ -74,9 +74,9 @@ public class UserCount {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserCount(Long countid, UserEntity id, Date createdAt, Boolean isActive) {
+	public UserCount(Long countId, UserEntity id, Date createdAt, Boolean isActive) {
 		super();
-		this.countid = countid;
+		this.countId = countId;
 		this.id = id;
 		this.createdAt = createdAt;
 		this.isActive = isActive;
@@ -85,7 +85,7 @@ public class UserCount {
 
 	@Override
 	public String toString() {
-		return "UserCount [countid=" + countid + ", id=" + id + ", createdAt=" + createdAt + ", isActive=" + isActive
+		return "UserCount [countId=" + countId + ", id=" + id + ", createdAt=" + createdAt + ", isActive=" + isActive
 				+ "]";
 	}
 

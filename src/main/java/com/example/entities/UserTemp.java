@@ -32,7 +32,7 @@ public class UserTemp {
 
 	// @OneToOne(fetch = FetchType.LAZY)
 	// @JoinColumn(name = "count_id")
-	private Long countid;
+	private Long countId;
 
 	public Long getId() {
 		return id;
@@ -95,30 +95,31 @@ public class UserTemp {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Long getCountid() {
-		return countid;
+	public Long getCountId() {
+		return countId;
 	}
 
-	public void setCountid(Long countid) {
-		this.countid = countid;
+	public void setCountId(Long countId) {
+		this.countId = countId;
 	}
 
-//	public UserTemp(Long id, String name, String email, String username, String address, boolean status,
-//			UserCount countid) {
-//		super();
-//		this.id = id;
-//		this.name = name;
-//		this.email = email;
-//		this.username = username;
-//		this.address = address;
-//		this.status = status;
-//		this.countid = countid;
-//	}
+
+
+	public UserTemp(Long id, String name, String email, String username, String address, boolean status, Long countId) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.username = username;
+		this.address = address;
+		this.status = status;
+		this.countId = countId;
+	}
 
 	@Override
 	public String toString() {
 		return "UserTemp [id=" + id + ", name=" + name + ", email=" + email + ", username=" + username + ", address="
-				+ address + ", status=" + status + ", countid=" + countid + "]";
+				+ address + ", status=" + status + ", countid=" + countId + "]";
 	}
 
 }

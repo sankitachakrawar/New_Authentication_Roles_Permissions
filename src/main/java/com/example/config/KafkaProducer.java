@@ -9,7 +9,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Configuration
 public class KafkaProducer {
 
-	public static final String USER = "userBulk";
+	public static final String USER = "userUpload";
 	
 	@Autowired
 	private KafkaTemplate<String, Object> kafkaTemplate;
